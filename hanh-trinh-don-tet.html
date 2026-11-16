@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="vi"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Hành trình đón Tết</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700&family=Nunito:wght@400;700&display=swap">
+<style>
+:root{--bg:#EAF3E3;--card:#fff;--ink:#17301F;--mut:#4B6354;--pri:#1F6B43;--pi:#fff;--acc:#F2B705;--line:#C3D9BD;--ok:#1F7A3E;--bad:#B3261E;--soft:#F3F8EF;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0F1D14;--card:#18291D;--ink:#EAF4E6;--mut:#A9C1B0;--pri:#5CCB8A;--pi:#0F1D14;--acc:#F2C94C;--line:#2E4636;--ok:#6FD596;--bad:#FF8A80;--soft:#1F3325}}
+:root[data-theme="dark"]{--bg:#0F1D14;--card:#18291D;--ink:#EAF4E6;--mut:#A9C1B0;--pri:#5CCB8A;--pi:#0F1D14;--acc:#F2C94C;--line:#2E4636;--ok:#6FD596;--bad:#FF8A80;--soft:#1F3325}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:18px/1.5 Nunito,system-ui,sans-serif}
+h1,h2,.btn{font-family:"Baloo 2",Nunito,system-ui,sans-serif}
+h1{font-size:2.1rem;line-height:1.15;margin:.2em 0}h2{font-size:1.5rem;margin:.2em 0 .5em}
+.wrap{max-width:720px;margin:0 auto;padding:14px}
+.card{background:var(--card);border:2px solid var(--line);border-radius:22px;padding:20px;margin-bottom:14px}
+.sub,.mut{color:var(--mut)}
+.map{display:flex;justify-content:space-between;gap:6px;margin:4px 0 14px}
+.node{flex:1;text-align:center;font-size:.8rem;color:var(--mut)}
+.node i{display:block;font-style:normal;font-size:2rem;filter:grayscale(1);opacity:.4}
+.node.cur{color:var(--ink);font-weight:700}.node.cur i{filter:none;opacity:.85}.node.done i{filter:none;opacity:1}
+.say{display:flex;gap:12px;align-items:flex-start;background:var(--soft);border-radius:16px;padding:12px 14px;margin:12px 0}
+.say p{margin:0}.av{font-size:2.2rem;line-height:1}
+.q{padding:14px 0;border-top:1px dashed var(--line)}.q p{margin:.2em 0}
+.tag{font-size:.75rem;background:var(--acc);color:#2b2200;border-radius:99px;padding:2px 9px;font-weight:700}
+.btn{background:var(--pri);color:var(--pi);border:0;border-radius:14px;padding:10px 22px;font-size:1.15rem;font-weight:700;cursor:pointer;min-height:48px;margin-top:10px}
+.opt,.chip{font:inherit;color:inherit;background:transparent;border:2px solid var(--line);border-radius:12px;padding:9px 14px;cursor:pointer;min-height:44px}
+.opt{display:block;width:100%;text-align:left;margin:6px 0}
+.chip{margin:4px 6px 4px 0}.chip:disabled{opacity:.35;cursor:default}
+.opt.on{border-color:var(--pri);box-shadow:inset 0 0 0 2px var(--pri);font-weight:700}
+.lnk{font:inherit;background:none;border:0;color:var(--pri);text-decoration:underline;cursor:pointer;padding:6px 0}
+.built{background:var(--soft);border-radius:10px;padding:8px 12px;min-height:42px}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between;margin:8px 0}
+select,textarea,input{font:inherit;color:var(--ink);background:var(--card);border:2px solid var(--line);border-radius:12px;padding:8px 10px;max-width:100%}
+textarea,input{width:100%}.cl{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px}
+.fb{font-weight:700;margin-top:6px}.ok{color:var(--ok)}.bad{color:var(--bad)}
+.thiep{display:grid;gap:8px;grid-template-columns:1fr 1fr}.thiep div{background:var(--soft);border:2px solid var(--acc);border-radius:14px;padding:10px 12px;font-style:italic}
+.tw{overflow-x:auto}table{border-collapse:collapse;width:100%}th,td{border-bottom:1px solid var(--line);padding:8px;text-align:left;white-space:nowrap}
+.bar{height:14px;background:var(--soft);border-radius:99px;overflow:hidden}.bar b{display:block;height:100%;background:var(--pri)}
+:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+@media(max-width:520px){.thiep,.cl{grid-template-columns:1fr}h1{font-size:1.7rem}}
+</style></head><body><div class="wrap"><div id="app"></div>
+<p class="mut" style="text-align:center"><button class="lnk" data-a="tch">Bảng kết quả dành cho giáo viên</button></p></div>
+<script>
+const L={
+1:{n:'Khu vườn từ ngữ',w:'🐰',s:'Hoa mai, hoa đào quên mất những từ miêu tả mình nên chưa nở được. Các bạn giúp mình tìm lại nhé!',i:[
+{id:'1a',t:'mcq',q:'Từ ngữ nào miêu tả hoa mai trong bài đọc?',o:['rực rỡ sắc vàng','màu hồng tươi','lạnh lẽo'],a:0,x:'rực rỡ sắc vàng',h:'Đọc lại đoạn 3 nhé.'},
+{id:'1b',t:'mcq',q:'Từ ngữ nào miêu tả hoa đào trong bài đọc?',o:['rực rỡ sắc vàng','màu hồng tươi, nụ hồng chúm chím','ẩm ướt'],a:1,x:'màu hồng tươi, nụ hồng chúm chím',h:'Đọc lại đoạn 3 nhé.'},
+{id:'1c',t:'words',q:'Nhìn tranh làm bánh chưng (tr.21): viết các từ chỉ sự vật, cách nhau bằng dấu phẩy. Ví dụ: lá dong',k:['lá dong','nồi','bếp','chậu','nước','bánh'],x:'lá dong, nồi, bếp lửa, chậu nước, bánh chưng'},
+{id:'1d',t:'words',q:'Viết các từ chỉ hoạt động trong tranh. Ví dụ: lau lá dong',k:['lau','rửa','gói','luộc','vớt','ngâm'],x:'lau lá dong, rửa lá, gói bánh, luộc bánh, vớt bánh'},
+{id:'1e',t:'open',q:'Động não: nói những điều em biết về ngày Tết. Viết thật nhiều từ ngữ!',p:'bánh chưng, hoa đào, lì xì…'}]},
+2:{n:'Rừng xanh kỳ diệu',w:'🦉',s:'Muốn đi qua khu rừng lá dong này, các bạn phải tìm ra manh mối trong bài đọc Tết đến rồi.',i:[
+{id:'2a',t:'order',q:'Sắp xếp 4 ý theo trình tự các đoạn trong bài',o:['Giới thiệu chung về Tết','Nói về bánh chưng, bánh tét','Nói về hoa mai, hoa đào','Nói về hoạt động của mọi người trong dịp Tết'],d:[2,0,3,1],x:'giới thiệu chung → bánh chưng, bánh tét → hoa mai, hoa đào → hoạt động của mọi người'},
+{id:'2b',t:'multi',q:'Người ta dùng những gì để làm bánh chưng, bánh tét? (chọn nhiều đáp án)',o:['gạo nếp','đỗ xanh','thịt lợn','khoai lang'],a:[0,1,2],x:'gạo nếp, đỗ xanh, thịt lợn',h:'Đọc lại đoạn 2 nhé.'},
+{id:'2c',t:'mcq',q:'Người lớn mong ước điều gì khi tặng bao lì xì cho trẻ em?',o:['các em mạnh khoẻ, giỏi giang','các em có thật nhiều đồ chơi','các em được nghỉ học nhiều ngày'],a:0,x:'các em mạnh khoẻ, giỏi giang',h:'Đọc lại đoạn cuối nhé.'},
+{id:'2d',t:'match',q:'Ghép mỗi loại bánh với hình dạng và lá gói',r:['Bánh chưng','Bánh tét'],c:['hình vuông, lá dong','hình trụ, lá chuối'],a:[0,1],x:'bánh chưng: hình vuông, lá dong; bánh tét: hình trụ, lá chuối'},
+{id:'2e',t:'open',q:'Em thích những hoạt động nào của gia đình em trong dịp Tết?'}]},
+3:{n:'Cây cầu câu văn',w:'🐰',s:'Cây cầu sắp nối liền rồi, nhưng chữ và câu bị đảo lộn mất. Các bạn sắp xếp lại giúp mình nhé!',i:[
+{id:'3a',t:'order',q:'Sắp xếp các từ thành câu giới thiệu loài hoa',o:['Đào','là','loài','hoa','đặc trưng','cho','Tết','ở','miền Bắc'],d:[5,0,7,2,8,1,4,6,3],x:'Đào là loài hoa đặc trưng cho Tết ở miền Bắc'},
+{id:'3b',t:'fill',q:'Chọn g hoặc gh thay cho ô trống (bài thơ của Trần Đăng Khoa, tr.21)',r:['▢é','▢ương'],c:['g','gh'],a:[1,0],x:'ghé, gương'},
+{id:'3c',t:'order',q:'Sắp xếp các hoạt động theo trình tự làm bánh chưng (tr.21)',o:['Rửa lá dong (tranh 3)','Lau lá dong (tranh 4)','Gói bánh (tranh 1)','Luộc bánh (tranh 5)','Vớt bánh (tranh 2)'],d:[2,4,0,3,1],x:'tranh 3 → 4 → 1 → 5 → 2 (đáp án dự kiến, GV đối chiếu)'},
+{id:'3d',t:'cloth',g:1,q:'Khăn trải bàn (tr.22): mỗi bạn viết một việc thường làm dịp Tết; cả nhóm chọn và viết một cặp hỏi – đáp. Mẫu: “Bạn thường làm gì vào dịp Tết? – Vào dịp Tết, mình thường đi thăm họ hàng.”'}]},
+4:{n:'Lời chúc đầu xuân',w:'🌸',s:'Khu vườn đã có màu sắc và bánh chưng đã gói xong. Giờ còn thiếu những lời chúc Tết của chính các bạn!',
+pre:'<div class="thiep"><div><b>Thiệp 1</b><br>Nhân dịp Tết Nguyên đán, cháu xin chúc ông bà luôn mạnh khoẻ và vui vẻ. Cháu của ông bà, Lê Hiếu</div><div><b>Thiệp 2</b><br>Nhân dịp năm mới, con xin chúc bố mẹ mọi điều tốt đẹp. Con của bố mẹ, Phương Mai</div></div>',i:[
+{id:'4a',t:'match',q:'Mỗi tấm thiệp do ai viết, gửi cho ai?',r:['Thiệp 1','Thiệp 2'],c:['Lê Hiếu gửi ông bà','Phương Mai gửi bố mẹ'],a:[0,1],x:'thiệp 1: Lê Hiếu gửi ông bà; thiệp 2: Phương Mai gửi bố mẹ'},
+{id:'4b',t:'match',q:'Mỗi tấm thiệp được viết vào dịp nào?',r:['Thiệp 1','Thiệp 2'],c:['Tết Nguyên đán','năm mới'],a:[0,1],x:'thiệp 1: Tết Nguyên đán; thiệp 2: năm mới'},
+{id:'4c',t:'match',q:'Người viết chúc điều gì?',r:['Thiệp 1','Thiệp 2'],c:['ông bà luôn mạnh khoẻ và vui vẻ','bố mẹ mọi điều tốt đẹp'],a:[0,1],x:'thiệp 1: ông bà mạnh khoẻ, vui vẻ; thiệp 2: bố mẹ mọi điều tốt đẹp'},
+{id:'4d',t:'open',q:'Em viết một câu chúc Tết.',p:'Nhân dịp …, em xin chúc … .'},
+{id:'4e',t:'open',g:1,q:'Nhóm chọn người nhận thiệp (một người bạn hoặc người thân ở xa).'},
+{id:'4f',t:'open',g:1,q:'Cả nhóm soạn tấm thiệp chúc Tết gửi người đó.'}]}};
+const $=s=>document.querySelector(s),app=$('#app');
+const E=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+let S={scr:'open',a:{},res:{},ck:{},saved:0},DB=null,UID=null,rows=null,tErr='',unsub=null;
+if(window.claude)(async()=>{try{const u=await claude.use('user');UID=u?await u.id():null;DB=await claude.use('db')}catch(e){}})();
+const key=(id,j)=>id+'.'+j;
+function G(it){const v=S.a[it.id];
+ if(it.t=='mcq')return v===it.a;
+ if(it.t=='multi')return JSON.stringify([...(v||[])].sort())==JSON.stringify(it.a);
+ if(it.t=='order')return JSON.stringify(v||[])==JSON.stringify(it.o.map((_,i)=>i));
+ if(it.t=='match'||it.t=='fill')return it.a.every((x,r)=>S.a[key(it.id,r)]===x);
+ if(it.t=='words')return it.k.some(w=>String(v||'').toLowerCase().includes(w));
+ return null}
+function check(c){let s=0,n=0;L[c].i.forEach(it=>{const g=G(it);if(g!==null){n++;if(g)s++}});S.res[c]={s,n};S.ck[c]=1;save()}
+function save(){if(!DB||!UID)return;DB.collection('results').doc(UID).set({name:S.a.name||'',group:S.a.group||'',res:S.res,a:S.a,at:Date.now()}).catch(()=>{})}
+function item(it,c){const v=S.a[it.id],g=G(it);let h=`<div class="q"><p><b>${it.q}</b>${it.g?' <span class="tag">👥 Cả nhóm</span>':''}</p>`;
+ if(it.t=='mcq')h+=it.o.map((o,i)=>`<button class="opt${v===i?' on':''}" data-a="pk" data-k="${it.id}" data-i="${i}">${o}</button>`).join('');
+ if(it.t=='multi')h+=it.o.map((o,i)=>{const on=(v||[]).includes(i);return `<button class="opt${on?' on':''}" data-a="mu" data-k="${it.id}" data-i="${i}">${on?'☑':'☐'} ${o}</button>`}).join('');
+ if(it.t=='order'){const p=v||[];h+=it.d.map(i=>`<button class="chip" data-a="od" data-k="${it.id}" data-i="${i}"${p.includes(i)?' disabled':''}>${it.o[i]}</button>`).join('')+`<p class="built">${p.length?p.map(i=>it.o[i]).join(' → '):'Chạm vào các ô theo thứ tự đúng'}</p><button class="lnk" data-a="cl" data-k="${it.id}">Xóa và làm lại</button>`}
+ if(it.t=='match'||it.t=='fill')h+=it.r.map((r,j)=>`<label class="row"><span>${r}</span><select data-k="${key(it.id,j)}"><option value="">Chọn…</option>${it.c.map((o,i)=>`<option value="${i}"${S.a[key(it.id,j)]===i?' selected':''}>${o}</option>`).join('')}</select></label>`).join('');
+ if(it.t=='words'||it.t=='open')h+=`<textarea rows="2" data-k="${it.id}" placeholder="${it.p||'Em viết ở đây'}">${E(v)}</textarea>`;
+ if(it.t=='cloth')h+='<div class="cl">'+[1,2,3,4].map(j=>`<textarea rows="3" data-k="${key(it.id,j)}" placeholder="Thành viên ${j}: một việc thường làm dịp Tết">${E(S.a[key(it.id,j)])}</textarea>`).join('')+`</div><textarea rows="2" data-k="${key(it.id,'c')}" placeholder="Kết quả thống nhất của nhóm: một cặp hỏi – đáp">${E(S.a[key(it.id,'c')])}</textarea>`;
+ if(S.ck[c]&&g!==null)h+=`<p class="fb ${g?'ok':'bad'}">${g?'✔ Đúng rồi!':'✘ Chưa đúng. Đáp án: '+it.x+'. '+(it.h||'')}</p>`;
+ return h+'</div>'}
+function mapv(){const c=+S.scr[1];return '<div class="map">'+[1,2,3,4].map(i=>`<div class="node${S.res[i]?' done':''}${i==c?' cur':''}"><i>🌸</i>Chặng ${i}</div>`).join('')+'</div>'}
+function view(){const s=S.scr;
+ if(s=='open')return `<div class="card"><h1>Hành trình đón Tết</h1><p class="sub">Giải mã thế giới ngôn từ · Tiếng Việt lớp 2 · Bài 4</p><div class="say"><span class="av">🐰</span><p>Tết sắp đến rồi mà khu vườn của mình mất hết sắc màu. Bánh chưng chưa gói được, những lời chúc cũng bay đi đâu mất. Các bạn giúp mình đón Tết nhé!</p></div><button class="btn" data-a="go" data-k="intro">Bắt đầu hành trình</button></div>`;
+ if(s=='intro')return `<div class="card"><h2>Em là ai?</h2><div class="say"><span class="av">🦉</span><p>Muốn đón Tết, chúng ta cần vượt qua bốn chặng. Mỗi chặng giúp khu vườn lấy lại một phần sắc màu. Hãy quan sát kỹ và suy nghĩ trước khi trả lời nhé!</p></div><label>Tên hoặc mã của em<input data-k="name" value="${E(S.a.name)}" autocomplete="off"></label><br><br><label>Tên nhóm (nếu có)<input data-k="group" value="${E(S.a.group)}" autocomplete="off"></label>${S.err?'<p class="fb bad">Em nhập tên hoặc mã trước nhé.</p>':''}<button class="btn" data-a="go" data-k="c1">Khám phá bản đồ</button></div>`;
+ if(/^c\d$/.test(s)){const c=+s[1],d=L[c],last=c==4,done=S.ck[c];
+  return mapv()+`<div class="card"><h2>Chặng ${c}. ${d.n}</h2><div class="say"><span class="av">${d.w}</span><p>${d.s}</p></div>${d.pre||''}${d.i.map(it=>item(it,c)).join('')}`+(done?`<p class="fb">Em đúng ${S.res[c].s}/${S.res[c].n} câu. Câu mở sẽ do cô giáo nhận xét.</p><button class="btn" data-a="go" data-k="${last?'end':'c'+(c+1)}">${last?'Xem kết quả':'Sang chặng '+(c+1)}</button>`:`<button class="btn" data-a="chk" data-k="${c}">${last?'Gửi bài':'Kiểm tra'}</button>`)+'</div>'}
+ if(s=='end'){const all=[1,2,3,4].every(i=>S.res[i]);return `<div class="card"><h2>${all?'🎉 Khu vườn đã đón Tết rực rỡ!':'Kết quả của em'}</h2><div class="say"><span class="av">🦉</span><p>Các bạn đã tìm từ ngữ, đọc hiểu, đặt câu và cùng gửi lời chúc. Cảm ơn các nhà thám hiểm!</p></div>`+[1,2,3,4].map(i=>{const r=S.res[i]||{s:0,n:1};return `<p>Chặng ${i}. ${L[i].n}: <b>${r.s}/${r.n}</b></p><div class="bar"><b style="width:${100*r.s/r.n}%"></b></div>`}).join('')+(all?'<p class="fb ok">🏅 Em nhận huy hiệu Người đón Tết!</p>':'')+`<div class="q"><p><b>Đọc mở rộng (tr.22):</b> tìm đọc một bài thơ hoặc câu chuyện về ngày Tết, ví dụ Sự tích bánh chưng, bánh giầy.</p><input data-k="ext1" placeholder="Tên bài thơ, câu chuyện" value="${E(S.a.ext1)}"><br><br><textarea rows="2" data-k="ext2" placeholder="Câu thơ hay hoặc điều em thích">${E(S.a.ext2)}</textarea><button class="btn" data-a="sv">Lưu phần chia sẻ</button>${S.saved?'<span class="fb ok"> Đã lưu</span>':''}</div></div>`}
+ if(s=='tch')return teacher()}
+function cell(r,i){return r.res&&r.res[i]?r.res[i].s+'/'+r.res[i].n:'—'}
+function teacher(){let R=rows;if(!DB)R=S.a.name?[{name:S.a.name,group:S.a.group,res:S.res}]:[];
+ let h='<div class="card"><h2>Bảng kết quả giáo viên</h2>';
+ if(!DB)h+='<p class="mut">Chưa kết nối lưu trữ chung, chỉ thấy kết quả trên máy này.</p>';
+ else if(tErr=='deny')h+='<p class="fb bad">Chỉ giáo viên (người sở hữu hoặc biên tập viên) xem được bảng này.</p>';
+ else if(tErr=='slow')h+='<p class="mut">Chưa tải được dữ liệu, có thể chưa cập nhật.</p>';
+ else if(!R)h+='<p class="mut">Đang tải…</p>';
+ if(R&&R.length){const av=i=>{const x=R.filter(r=>r.res&&r.res[i]);return x.length?Math.round(100*x.reduce((a,r)=>a+r.res[i].s/r.res[i].n,0)/x.length)+'%':'—'};
+  h+='<div class="tw"><table><tr><th>Học sinh</th><th>Nhóm</th>'+[1,2,3,4].map(i=>`<th>Chặng ${i}</th>`).join('')+'</tr>'+R.map(r=>`<tr><td>${E(r.name)}</td><td>${E(r.group)}</td>`+[1,2,3,4].map(i=>`<td>${cell(r,i)}</td>`).join('')+'</tr>').join('')+`<tr><th colspan="2">Tỷ lệ đúng trung bình</th>`+[1,2,3,4].map(i=>`<th>${av(i)}</th>`).join('')+'</tr></table></div>'}
+ else if(R)h+='<p class="mut">Chưa có học sinh nào nộp bài.</p>';
+ return h+'<button class="btn" data-a="go" data-k="'+(S.back||'open')+'">Quay lại</button></div>'}
+function render(){app.innerHTML=view();scrollTo(0,0)}
+function openT(){S.back=S.scr=='tch'?S.back:S.scr;S.scr='tch';
+ if(DB&&!unsub){const t=setTimeout(()=>{tErr='slow';if(S.scr=='tch')render()},10000);
+  unsub=DB.collection('results').onSnapshot(sn=>{clearTimeout(t);rows=sn.docs.map(d=>d.data());tErr='';if(S.scr=='tch')render()},e=>{clearTimeout(t);tErr='deny';rows=[];if(S.scr=='tch')render()})}
+ render()}
+document.onclick=e=>{const b=e.target.closest('[data-a]');if(!b)return;const{a,k,i}=b.dataset,n=+i;
+ if(a=='tch')return openT();
+ if(a=='pk')S.a[k]=n;
+ else if(a=='mu'){const s=S.a[k]||[];S.a[k]=s.includes(n)?s.filter(x=>x!=n):[...s,n]}
+ else if(a=='od')S.a[k]=[...(S.a[k]||[]),n];
+ else if(a=='cl')S.a[k]=[];
+ else if(a=='chk')check(+k);
+ else if(a=='sv'){save();S.saved=1}
+ else if(a=='go'){if(k=='c1'&&!(S.a.name||'').trim()){S.err=1;return render()}S.err=0;S.scr=k;S.saved=0}
+ render()};
+document.oninput=document.onchange=e=>{const t=e.target,k=t.dataset&&t.dataset.k;if(!k)return;S.a[k]=t.tagName=='SELECT'?(t.value===''?undefined:+t.value):t.value};
+render();
+</script></body></html>
